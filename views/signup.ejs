@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Open API - 회원가입</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <span><a href="/">&lt&lt INDEX</a></span>
+      <span><a href="/login">로그인</a></span>
+    </div>
+    <h1>회원 가입</h1>
+    <!-- 사용자 정보 -->
+    <div><input type="text" id="name" placeholder="name"></div>
+    <div><input type="text" id="email" placeholder="email"></div>
+    <div><input type="password" id="password" placeholder="password"></div>
+
+
+    <!-- 액세스 토큰 정보 ("text" -> "hidden"으로 변경) -->
+    <div><input type="text" id="accessToken" placeholder="access_token" readonly></div>
+    <div><input type="text" id="refreshToken" placeholder="refresh_token" readonly></div>
+    <div><input type="text" id="expires_in" placeholder="expires_in" readonly></div>
+    <div><input type="text" id="seqNo" placeholder="seq_no" readonly></div>
+      
+    <div>
+      <span><input type="submit" id="authButton" value="인증하기"></span>
+      <span><input type="submit" id="signupButton" value="가입하기" disabled></span>
+    </div>
+    
+    <script>
+      $("#authButton").click(function(){
+        if($("#name").val() && $("#email").val() && $("#password").val()){
+          var tmpWindow = window.open("/", "", "_blank");
+          var client_id="<%=data.ClientID%>";
+
+          tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
+          "response_type=code&"+
+          "client_id="+client_id+"&"+
+          "redirect_uri=http://localhost:3000/signup/authResult&"+
+          "scope=login inquiry transfer&"+
+          "state=12345678901234567890123456789012&"+
+          "auth_type=0";
+        } else { 
+          alert("모든 정보를 입력해 주세요.")
+        }
+      });
+      $("#signupButton").click(function(){
+        var userName = $("#name").val();
+        var userEmail = $("#email").val();
+        var userPassword = $("#password").val();
+        var userAccessToken = $("#accessToken").val();
+        var userRefreshToken = $("#refreshToken").val();
+        var userTokenExpiresIn = $("#expires_in").val();
+        var userSeqNo = $("#seqNo").val();
+        
+        $.ajax({
+          url:'/signup',
+          type : 'POST',
+          data : {
+            userName : userName,
+            userEmail : userEmail,
+            userPassword : userPassword,
+            userAccessToken : userAccessToken,
+            userRefreshToken : userRefreshToken,
+            userTokenExpiresIn : userTokenExpiresIn,
+            userSeqNo : userSeqNo
+          },
+          success:function(data){
+            alert(data.result);
+            if(data.result=="가입완료"){
+              window.location.href = "/";
+            } else {
+              window.location.href = "/signup";
+            }
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

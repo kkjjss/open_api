@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<body>
+<div id="accessToken"><%=data.access_token%></div>
+<div id="refreshToken"><%=data.refresh_token%></div>
+<div id="seqNo"><%=data.user_seq_no%></div>
+<div id="expires_in"><%=data.expires_in%></div>
+</body>
+<script>
+    opener.document.getElementById("accessToken").value =
+       document.getElementById("accessToken").textContent;
+    opener.document.getElementById("refreshToken").value =
+       document.getElementById("refreshToken").textContent;
+    opener.document.getElementById("expires_in").value =
+       document.getElementById("expires_in").textContent;
+    opener.document.getElementById("seqNo").value =
+       document.getElementById("seqNo").textContent;
+    
+    opener.document.getElementById("authButton").disabled = "disabled";
+    opener.document.getElementById("signupButton").removeAttribute("disabled");
+
+    alert("인증 완료")
+    self.close();
+</script>
+</html>
