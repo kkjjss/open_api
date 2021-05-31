@@ -6,4 +6,4 @@
 - 개발 언어 : Node.js
 - DB : MySQL
 - IDE : Visual Studio Code, Sequel Ace(DB)
-- 기타 : Express.js, Ajax
+- 기타 : Express.js, Ajax, Passport.js
