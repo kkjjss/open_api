@@ -32,14 +32,16 @@
       $("#authButton").click(function(){
         if($("#name").val() && $("#email").val() && $("#password").val()){
           var tmpWindow = window.open("/", "", "_blank");
-          var client_id="<%=data.ClientID%>";
+          var client_id="<%=apikey.ClientID%>";
+          var state="<%=state%>";
+          var defaultScope="<%=defaultScope%>";
 
           tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
           "response_type=code&"+
           "client_id="+client_id+"&"+
           "redirect_uri=http://localhost:3000/signup/authResult&"+
-          "scope=login inquiry transfer&"+
-          "state=12345678901234567890123456789012&"+
+          "scope="+defaultScope+"&"+
+          "state="+state+"&"+
           "auth_type=0";
         } else { 
           alert("모든 정보를 입력해 주세요.")
