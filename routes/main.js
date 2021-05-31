@@ -2,11 +2,11 @@ var express = require('express');
 var user = require('../lib/user');
 var router = express.Router();
 
-router.get("/",function(req, res, next){
-    if(user.isLoggedIn(req)){
-        res.redirect('/main')
+router.get('/',function(req, res){
+    if(!user.isLoggedIn(req)){
+        res.redirect('/')
     } else {
-        res.render("index",{});
+        res.render('main',{user:req.user});
     }
 })
 

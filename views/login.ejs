@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Openbanking API - 로그인</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <div>
+        <span><a href="/">&lt&ltINDEX</a></span>
+        <span><a href="/signup">회원가입</a></span>
+    </div>
+
+    <h1>로그인</h1>
+    <form action="/login" method="post">
+        <div>
+            <input type="text" name="email" placeholder="email"/>
+        </div>
+        <div>
+            <input type="password" name="password" placeholder="password"/>
+        </div>
+        <div>
+            <input type="submit" value="로그인"/>
+        </div>
+    </form>
+    <span style="color: red;"><%=flash.error%></span>
+
+</body>
+</html>
