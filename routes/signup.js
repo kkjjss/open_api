@@ -14,6 +14,14 @@ var apikey = {};
 var state = "12345678901234567890123456789012";
 var defaultScope = "login inquiry transfer";
 
+router.get("*",function(req, res, next){
+    if(user.isLoggedIn(req)){
+        res.redirect('/main')
+    } else {
+        next();
+    }
+})
+
 router.get("/", function(req, res){
     var sql = "SELECT * FROM apikey";
     sqlConnection.query(sql, function (error, results, fields) {
