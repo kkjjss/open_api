@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var user = require('../lib/user');
 var mysql = require('mysql');
 var fs = require("fs");
 var request = require("request");
@@ -14,21 +15,17 @@ var apikey = {};
 var state = "12345678901234567890123456789012";
 var defaultScope = "login inquiry transfer";
 
-router.get("*",function(req, res, next){
+router.get("/",function(req, res){
     if(user.isLoggedIn(req)){
         res.redirect('/main')
     } else {
-        next();
+        var sql = "SELECT * FROM apikey";
+        sqlConnection.query(sql, function (error, results, fields) {
+            apikey = results[0];
+            res.render("signup",{apikey : apikey, state : state, defaultScope : defaultScope});
+        });
     }
 })
-
-router.get("/", function(req, res){
-    var sql = "SELECT * FROM apikey";
-    sqlConnection.query(sql, function (error, results, fields) {
-        apikey = results[0];
-        res.render("signup",{apikey : apikey, state : state, defaultScope : defaultScope});
-    });
-});
 
 router.get('/authResult',function(req, res){
     console.log(req.query);
