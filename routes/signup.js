@@ -63,18 +63,21 @@ router.post("/",function(req,res){
     var userTokenExpiresIn = req.body.userTokenExpiresIn;
     var userSeqNo = req.body.userSeqNo;
 
-    var sql = "INSERT INTO users (name, email, password, accessToken, refreshToken, expires_in, seqNo, scope)" +
-    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    sqlConnection.query(sql,[userName, userEmail, userPassword, userAccessToken, userRefreshToken, userTokenExpiresIn, userSeqNo, defaultScope], function (error, results, fields) {
-        if (error){
-        res.json({
-            result : "에러"
-        });
+    var sql = "SELECT * FROM users WHERE email=?"
+    sqlConnection.query(sql,[userEmail],function(error, results, fields){
+        if(results[0]){
+            res.json({result : "중복된 이메일 입니다."})
+        } else {
+            sql = "INSERT INTO users (name, email, password, accessToken, refreshToken, expires_in, seqNo, scope)" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            sqlConnection.query(sql,[userName, userEmail, userPassword, userAccessToken, userRefreshToken, userTokenExpiresIn, userSeqNo, defaultScope], function (error2, results2, fields) {
+                if (error2){
+                    res.json({result : "에러"});
+                }
+                console.log(results2);
+                res.json({result : "가입완료"});
+            });
         }
-        console.log(results);
-        res.json({
-        result : "가입완료"
-        });
     });
 });
 
