@@ -10,7 +10,7 @@
       <span><a href="/">&lt&lt INDEX</a></span>
       <span><a href="/login">로그인</a></span>
     </div>
-    <h1>회원 가입</h1>
+    <h1>Open API - 회원 가입</h1>
     <!-- 사용자 정보 -->
     <div><input type="text" id="name" placeholder="name"></div>
     <div><input type="text" id="email" placeholder="email"></div>
@@ -18,10 +18,10 @@
 
 
     <!-- 액세스 토큰 정보 ("text" -> "hidden"으로 변경) -->
-    <div><input type="text" id="accessToken" placeholder="access_token" readonly></div>
-    <div><input type="text" id="refreshToken" placeholder="refresh_token" readonly></div>
-    <div><input type="text" id="expires_in" placeholder="expires_in" readonly></div>
-    <div><input type="text" id="seqNo" placeholder="seq_no" readonly></div>
+    <div><input type="hidden" id="accessToken" placeholder="access_token" readonly></div>
+    <div><input type="hidden" id="refreshToken" placeholder="refresh_token" readonly></div>
+    <div><input type="hidden" id="expires_in" placeholder="expires_in" readonly></div>
+    <div><input type="hidden" id="seqNo" placeholder="seq_no" readonly></div>
       
     <div>
       <span><input type="submit" id="authButton" value="인증하기"></span>
@@ -72,6 +72,8 @@
             alert(data.result);
             if(data.result=="가입완료"){
               window.location.href = "/";
+            } else if(data.result=="중복된 이메일 입니다."){
+              document.getElementById("email").value = "";
             } else {
               window.location.href = "/signup";
             }

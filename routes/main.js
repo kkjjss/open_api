@@ -18,7 +18,7 @@ router.get('/',function(req, res){
         var sql = "SELECT accessToken, seqNo FROM users WHERE name=? AND email=?";
         sqlConnection.query(sql,[req.user.name, req.user.email], function (error, results, fields) {
             if (error) throw error;
-            console.log("GET access token, seqNo from DB",results[0])
+            console.log("GET access token, seqNo from DB : ",results)
             var accessToken = results[0].accessToken;
             var seqNo = results[0].seqNo;
 

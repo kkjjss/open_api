@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Open API - 계좌 상세 조회</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <%=user.name%>[<%=user.email%>] <a href="/logout">로그아웃</a> 
+    <h1><a href="/main">Open API - 계좌 상세 조회</a></h1>
+
+    <div id="balance">
+        <h3><span style="font-weight:bolder">계좌 잔고 : </span> <span id="balance_amt"></span></h3>
+    </div>
+    <div id="transaction_list">
+        <h3>거래 내역</h3>
+        <ol id="res">
+        </ol>
+    </div>
+
+    <script>
+        $(function(){
+            $.ajax({
+                url:'/balance',
+                type : 'POST',
+                data : {
+                    fintech_use_num : "<%=qs.fn%>"
+                },
+                success:function(data){
+                    if(data.result.rsp_code == 'A0000'){
+                        $("#balance_amt").text(data.result.balance_amt+"원");
+                    } else if(data.result.rsp_code == 'A0326'){
+                        $("#balance_amt").text("은행거래고유번호 중복 : 다시 시도해 주세요");
+                    } else {
+                        $("#balance_amt").text("잔액 확인 실패");
+                    }
+                }
+            });
+            $.ajax({
+                url:'/account',
+                type : 'POST',
+                data : {
+                    fintech_use_num : "<%=qs.fn%>"
+                },
+                success:function(data){
+                    if(data.result == "success"){
+                        $("#res").html(data.transaction_list);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

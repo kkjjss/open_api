@@ -87,13 +87,15 @@ app.get('/logout',function(req,res){
 //라우터
 var indexRouter = require('./routes/index')
 var signupRouter = require('./routes/signup')
-var mainRouter= require('./routes/main')
-
-
+var mainRouter = require('./routes/main')
+var accountRouter = require('./routes/account')
+var balanceRouter = require('./routes/balance')
 
 app.use('/',indexRouter);
 app.use('/signup',signupRouter);
 app.use('/main',mainRouter);
+app.use('/account',accountRouter);
+app.use('/balance',balanceRouter)
 
 
 app.listen(3000);
