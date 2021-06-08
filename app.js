@@ -90,12 +90,14 @@ var signupRouter = require('./routes/signup')
 var mainRouter = require('./routes/main')
 var accountRouter = require('./routes/account')
 var balanceRouter = require('./routes/balance')
+var transferRouter = require('./routes/transfer')
 
 app.use('/',indexRouter);
 app.use('/signup',signupRouter);
 app.use('/main',mainRouter);
 app.use('/account',accountRouter);
-app.use('/balance',balanceRouter)
+app.use('/balance',balanceRouter);
+app.use('/transfer',transferRouter);
 
 
 app.listen(3000);

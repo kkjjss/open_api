@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Open API - 계좌 상세 조회</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <%=user.name%>[<%=user.email%>] <a href="/logout">로그아웃</a> 
+    <h1><a href="/main">Open API - 송금</a></h1>
+
+    <div id="balance">
+        <h3><span style="font-weight:bolder">계좌 잔고 : </span> <span id="balance_amt"></span></h3>
+    </div>
+    <div>
+        <div>
+            <SELECT id="recv_client_bank_code" SIZE=1>
+                <option value="000">은행</option>
+                <OPTION value="002">KDB 산업</OPTION>
+            </SELECT>
+            <input type="text" id="recv_client_account_num" placeholder="계좌">
+        </div>
+        ₩ <input type="text" id="tran_amt" placeholder="보낼 금액">
+        <input type="button" id="transferButton" value="송금">
+    </div>
+
+    <script>
+        $(function(){
+            var balance = '';
+            $.ajax({
+                url:'/balance',
+                type : 'GET',
+                data : {
+                    fintech_use_num : "<%=qs.fn%>"
+                },
+                success:function(data){
+                    if(data.result.rsp_code == 'A0000'){
+                        balance = data.result.balance_amt;
+                        $("#balance_amt").text(balance+"원");
+                    } else if(data.result.rsp_code == 'A0326'){
+                        $("#balance_amt").text("은행거래고유번호 중복 : 다시 시도해 주세요");
+                    } else {
+                        $("#balance_amt").text("잔액 확인 실패");
+                    }
+                }
+            });
+            $("#transferButton").click(function(){
+                if($("#recv_client_bank_code").val()&&$("#recv_client_account_num").val()&&$("#tran_amt").val()<=balance*1&&$("#tran_amt").val()>0){
+                    var recv_client_bank_code = $("#recv_client_bank_code").val();
+                    var recv_client_account_num = $("#recv_client_account_num").val();
+                    var tran_amt = $("#tran_amt").val();
+
+                    $.ajax({
+                        url:'/transfer',
+                        type : 'POST',
+                        data : {
+                            recv_client_bank_code : recv_client_bank_code,
+                            recv_client_account_num : recv_client_account_num,
+                            tran_amt : tran_amt,
+                            fintech_use_num : "<%=qs.fn%>"
+                        },
+                        success:function(data){
+                            if(data.result.rsp_code == 'A0000'){
+                                alert('출금 이체 성공')
+                                window.location = "/account?fn=<%=qs.fn%>"
+                            } else {
+                                alert('출금 이체 실패')
+                            }
+                        }
+                    })
+                } else {
+                    alert('다시 입력해 주세요');
+                }
+            })
+        });
+    </script>
+</body>
+</html>

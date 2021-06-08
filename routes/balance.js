@@ -11,8 +11,9 @@ var DBoptions = JSON.parse(fs.readFileSync('./private/DBoptions.json'));
 const sqlConnection = mysql.createConnection(DBoptions);
 sqlConnection.connect();
 
-router.post('*',function(req, res){
-    var fintech_use_num = req.body.fintech_use_num;
+router.get('/',function(req, res){
+    console.log(req.query)
+    var fintech_use_num = req.query.fintech_use_num;
 
     var sql = "SELECT accessToken FROM users WHERE name=? AND email=?";
     sqlConnection.query(sql,[req.user.name, req.user.email], function (error, results, fields) {
